@@ -20,19 +20,19 @@ object SaladImpl {
       }
 
     val inner = {
-      val tuples = pairs zip (1 to pairs.size).map("$x%s" format _)
-      val methods = tuples.map{ case ((term, resultType), tmp) =>
-        DefDef(Modifiers(),
-          term, List(), List(), TypeTree(), Ident(TermName(tmp)))
+      val tuples = pairs.zipWithIndex.map{ case ((term, _), index) =>
+        term -> TermName("$x" + index)
       }
-      val values = tuples.map{ case ((term, resultType), tmp) =>
-        ValDef(Modifiers(),
-          TermName(tmp), TypeTree(), Ident(term))
+      val values = tuples.map{ case (term, tmp) =>
+        q"val $tmp = $term"
+      }
+      val methods = tuples.map{ case (term, tmp) =>
+        q"def $term = $tmp"
       }
       q"{ ..$values; new $klass { ..$methods } }"
     }
     val parameters = pairs.map{ case (term, resultType) =>
-      ValDef(Modifiers(), term, q"$resultType", EmptyTree)
+      q"$term:$resultType"
     }
     val code = q"new { def apply(..$parameters) = $inner }"
     /*
