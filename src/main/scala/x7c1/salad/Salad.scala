@@ -1,14 +1,14 @@
 package x7c1.salad
 
 import scala.language.experimental.macros
-import scala.reflect.macros.whitebox.Context
+import scala.reflect.macros.whitebox
 
 object Salad {
   def Factory[A]: Any = macro SaladImpl.factory[A]
 }
 
 object SaladImpl {
-  def factory[A: c.WeakTypeTag](c: Context) = {
+  def factory[A: c.WeakTypeTag](c: whitebox.Context) = {
     import c.universe._
 
     val klass = weakTypeOf[A]
@@ -16,8 +16,9 @@ object SaladImpl {
       member <- klass.members if member.isMethod && member.isAbstract
       method = member.asMethod
     } yield {
-      method.name -> method.info.finalResultType
+      method.name -> method.typeSignatureIn(klass)
     }
+
     val inner = {
       val tuples = pairs.zipWithIndex.map{ case ((term, _), index) =>
         term -> TermName("$x" + index)
@@ -37,7 +38,7 @@ object SaladImpl {
     /*
     println(showRaw(code))
     println(showCode(code))
-    */
+    // */
     code
   }
 

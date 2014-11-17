@@ -13,5 +13,13 @@ object SaladSampleTest extends Specification{
       val val4 = SaladSample.val4
       1.23 === val4
     }
+    "create val5" in {
+      val val5 = SaladSample.val5
+      val5 === "foo5"
+    }
+    "create val7" in {
+      val val7 = SaladSample.val7
+      val7 === 777
+    }
   }
 }

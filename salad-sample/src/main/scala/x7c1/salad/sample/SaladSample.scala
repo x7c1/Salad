@@ -27,6 +27,20 @@ object SaladSample {
     x.value4
   }
 
+  def val5 = {
+    val GenericSample1 = Factory[GenericSample1[String]]
+    val x = GenericSample1(genericValue1 = "foo5")
+    x.genericValue1
+  }
+
+  def val7 = {
+    val GenericMixin = Factory[GenericMixin]
+    val x = GenericMixin(
+      genericValue1 = 777,
+      genericValue2 = "bar"
+    )
+    x.genericValue1
+  }
 }
 
 trait Sample{
@@ -42,3 +56,13 @@ trait SubSample extends Sample with SampleTrait{
 trait SampleTrait {
   def value5: Int
 }
+
+trait GenericSample1[A] {
+  def genericValue1: A
+}
+
+trait GenericSample2[X] {
+  def genericValue2: X
+}
+
+trait GenericMixin extends GenericSample1[Int] with GenericSample2[String]
