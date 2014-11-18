@@ -12,12 +12,13 @@ object SaladImpl {
     import c.universe._
 
     val klass = weakTypeOf[A]
-    val pairs = for {
-      member <- klass.members if member.isMethod && member.isAbstract
-      method = member.asMethod
-    } yield {
-      method.name -> method.typeSignatureIn(klass)
-    }
+    val pairs = klass.members.
+      filter(_.isMethod).filter(_.isAbstract).map(_.asMethod).
+      map {
+        method => method.name -> method.typeSignatureIn(klass)
+      } collect {
+        case (term, NullaryMethodType(resultType)) => term -> resultType
+      }
 
     val inner = {
       val tuples = pairs.zipWithIndex.map{ case ((term, _), index) =>
