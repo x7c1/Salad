@@ -17,32 +17,32 @@ object TypeStructureImpl {
         filter(! _.owner.fullName.startsWith("scala")).
         map(_.asMethod).map {
           method =>
-            method.name -> method.typeSignatureIn(target)
+            method -> method.typeSignatureIn(target)
         } collect {
-          case (name, NullaryMethodType(resultType)) =>
+          case (method, NullaryMethodType(resultType)) =>
             createField(
-              fieldName = name.decodedName.toString,
+              decodeName = method.name.decodedName.toString,
               typeTree = buildFrom(resultType))
         }
 
       createType(
-        typeName = target.toString,
+        typedName = target.toString,
         memberTrees = fields.toList )
     }
-    def createType(typeName: String, memberTrees: List[Tree]) = {
-      q"new ${typeOf[SaladType]}($typeName, $memberTrees)"
+    def createType(typedName: String, memberTrees: List[Tree]) = {
+      q"new ${typeOf[SaladType]}($typedName, $memberTrees)"
     }
-    def createField(fieldName: String, typeTree: Tree) = {
-      q"new ${typeOf[SaladField]}($fieldName, $typeTree)"
+    def createField(decodeName: String, typeTree: Tree) = {
+      q"new ${typeOf[SaladField]}($decodeName, $typeTree)"
     }
     buildFrom(weakTypeOf[A])
   }
 }
 
 class SaladType(
-  val typeName: String,
+  val typedName: String,
   val members: Seq[SaladField])
 
 class SaladField(
-  val fieldName: String,
+  val decodedName: String,
   val resultType: SaladType)
