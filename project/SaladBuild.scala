@@ -23,7 +23,7 @@ object SaladBuild extends Build {
     )).
     dependsOn(`salad-lib`)
 
-  lazy val root = Project("noir", file(".")).
+  lazy val root = Project("salad", file(".")).
     aggregate(`salad-lib`, `salad-sample`)
 
 }

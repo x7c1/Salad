@@ -21,7 +21,7 @@ private object TypeStructureImpl {
         } collect {
           case (method, NullaryMethodType(resultType)) =>
             createField(
-              decodeName = method.name.decodedName.toString,
+              decodedName = method.name.decodedName.toString,
               typeTree = buildFrom(resultType))
         }
 
@@ -32,8 +32,8 @@ private object TypeStructureImpl {
     def createType(typedName: String, memberTrees: List[Tree]) = {
       q"new ${typeOf[SaladType]}($typedName, $memberTrees)"
     }
-    def createField(decodeName: String, typeTree: Tree) = {
-      q"new ${typeOf[SaladField]}($decodeName, $typeTree)"
+    def createField(decodedName: String, typeTree: Tree) = {
+      q"new ${typeOf[SaladField]}($decodedName, $typeTree)"
     }
     buildFrom(weakTypeOf[A])
   }
