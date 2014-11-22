@@ -1,7 +1,7 @@
 package x7c1.salad.sample
 import org.specs2.mutable.Specification
 
-object TypeDisplayTest extends Specification {
+object TypeStructureTest extends Specification {
   TypeStructureSample.getClass.getSimpleName should {
     "inspect a type structure" in {
       val x = TypeStructureSample.value1

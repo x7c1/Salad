@@ -7,7 +7,7 @@ object TypeStructure {
   def inspect[A]: SaladType = macro TypeStructureImpl.inspect[A]
 }
 
-object TypeStructureImpl {
+private object TypeStructureImpl {
   def inspect[A: c.WeakTypeTag](c: blackbox.Context) = {
     import c.universe._
 
