@@ -1,40 +1,52 @@
 package x7c1.salad.sample
 
-import x7c1.salad.TypeStructure
-import x7c1.salad.reflect.TypeReflection
+import x7c1.salad.SaladType
+import x7c1.salad.compile.TypeInspector
+import x7c1.salad.reflect.TypeReflector
 
-object TypeStructureSample {
-  def value1 = {
-    TypeStructure.inspect[SampleMemberType]
+trait SampleTypes {
+  def sampleType: SaladType
+  def nestedPackage: SaladType
+  def nestedInTrait: SaladType
+  def nestedInObject: SaladType
+}
+
+object TypesByMacro extends SampleTypes{
+  def sampleType = {
+    TypeInspector.inspect[SampleType]
   }
-  def nested = {
-    TypeStructure.inspect[x1.x2.Nested]
+  def nestedPackage = {
+    TypeInspector.inspect[x1.x2.Nested]
   }
   def nestedInObject = {
-    TypeStructure.inspect[x1.x2.FooObject.InnerObject]
+    TypeInspector.inspect[x1.x2.FooObject.InnerObject]
   }
   def nestedInTrait = {
-    TypeStructure.inspect[x1.x2.FooTrait#InnerTrait]
-  }
-
-  def reflect = {
-    TypeReflection.inspect[SampleMemberType]
-  }
-  def reflectNestedPackage = {
-    TypeReflection.inspect[x1.x2.Nested]
-  }
-  def reflectInTrait = {
-    TypeReflection.inspect[x1.x2.FooTrait#InnerTrait]
-  }
-  def reflectInObject = {
-    TypeReflection.inspect[x1.x2.FooObject.InnerObject]
+    TypeInspector.inspect[x1.x2.FooTrait#InnerTrait]
   }
 }
 
-trait SampleMemberType {
+object TypesByReflection extends SampleTypes {
+  def sampleType = {
+    TypeReflector.inspect[SampleType]
+  }
+  def nestedPackage = {
+    TypeReflector.inspect[x1.x2.Nested]
+  }
+  def nestedInTrait = {
+    TypeReflector.inspect[x1.x2.FooTrait#InnerTrait]
+  }
+  def nestedInObject = {
+    TypeReflector.inspect[x1.x2.FooObject.InnerObject]
+  }
+}
+
+trait SampleType {
   def intValue: Int
+  def stringValue: String
+
   def listFloatValue: List[Float]
-  def `quoted-1.2.3`: String
+  def `quoted-1.2.3`: Int
   def genericValue: GenericDisplayType[String, GenericDisplayType[Int, Float]]
   def values: Seq[GenericDisplayType[String, Int]]
 }

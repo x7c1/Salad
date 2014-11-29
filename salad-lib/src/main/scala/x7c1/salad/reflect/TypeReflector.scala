@@ -4,7 +4,7 @@ import x7c1.salad.{SaladField, SaladType}
 
 import scala.reflect.runtime.universe._
 
-object TypeReflection {
+object TypeReflector {
   def inspect[A: WeakTypeTag]: SaladType = {
     val target = implicitly[WeakTypeTag[A]]
 

@@ -1,13 +1,15 @@
-package x7c1.salad
+package x7c1.salad.compile
 
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
-object TypeStructure {
-  def inspect[A]: SaladType = macro TypeStructureImpl.inspect[A]
+import x7c1.salad.{SaladField, SaladType}
+
+object TypeInspector {
+  def inspect[A]: SaladType = macro TypeInspectorImpl.inspect[A]
 }
 
-private object TypeStructureImpl {
+private object TypeInspectorImpl {
   def inspect[A: c.WeakTypeTag](c: blackbox.Context) = {
     import c.universe._
 
@@ -19,14 +21,14 @@ private object TypeStructureImpl {
         filter(x => x.isMethod && x.isAbstract).
         filter(! _.owner.fullName.startsWith("scala.")).
         map(_.asMethod).map {
-          method =>
-            method -> method.typeSignatureIn(target)
-        } collect {
-          case (method, NullaryMethodType(resultType)) =>
-            createField(
-              decodedName = method.name.decodedName.toString,
-              typeTree = buildFrom(resultType))
-        }
+        method =>
+          method -> method.typeSignatureIn(target)
+      } collect {
+        case (method, NullaryMethodType(resultType)) =>
+          createField(
+            decodedName = method.name.decodedName.toString,
+            typeTree = buildFrom(resultType))
+      }
 
       createType(
         packageName = findPackage(target.typeSymbol.owner),
@@ -49,17 +51,3 @@ private object TypeStructureImpl {
     buildFrom(weakTypeOf[A])
   }
 }
-
-class SaladType(
-  /**
-   * exists if enclosing symbol is package
-   * otherwise none (e.g. if defined in object, trait, class)
-   */
-  val packageName: Option[String],
-  val typedName: String,
-  val typeArguments: Seq[SaladType],
-  val members: Seq[SaladField])
-
-class SaladField(
-  val decodedName: String,
-  val resultType: SaladType)
