@@ -1,7 +1,6 @@
 package x7c1.salad.sample
 import org.specs2.mutable.Specification
-import x7c1.salad.compile.TypeInspector
-import x7c1.salad.reflect.TypeReflector
+import x7c1.salad.inspector.{TypeReflector, TypeExpander}
 
 trait CommonTests {
   this: Specification =>
@@ -38,7 +37,7 @@ trait CommonTests {
 object TypeStructureTest extends Specification with CommonTests {
   override def types = TypesByMacro
 
-  TypeInspector.getClass.getSimpleName should {
+  TypeExpander.getClass.getSimpleName should {
     "inspect a type structure by macro" in {
       val x = types.sampleType
       x.typedName === classOf[SampleType].getName

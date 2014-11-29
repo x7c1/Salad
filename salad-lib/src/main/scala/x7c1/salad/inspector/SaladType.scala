@@ -1,4 +1,4 @@
-package x7c1.salad
+package x7c1.salad.inspector
 
 class SaladType(
   /**

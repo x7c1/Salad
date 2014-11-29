@@ -1,6 +1,4 @@
-package x7c1.salad.reflect
-
-import x7c1.salad.{SaladField, SaladType}
+package x7c1.salad.inspector
 
 import scala.reflect.runtime.universe._
 

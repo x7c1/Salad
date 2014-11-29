@@ -1,15 +1,13 @@
-package x7c1.salad.compile
+package x7c1.salad.inspector
 
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
-import x7c1.salad.{SaladField, SaladType}
-
-object TypeInspector {
-  def inspect[A]: SaladType = macro TypeInspectorImpl.inspect[A]
+object TypeExpander {
+  def inspect[A]: SaladType = macro TypeExpanderImpl.inspect[A]
 }
 
-private object TypeInspectorImpl {
+private object TypeExpanderImpl {
   def inspect[A: c.WeakTypeTag](c: blackbox.Context) = {
     import c.universe._
 

@@ -1,8 +1,6 @@
 package x7c1.salad.sample
 
-import x7c1.salad.SaladType
-import x7c1.salad.compile.TypeInspector
-import x7c1.salad.reflect.TypeReflector
+import x7c1.salad.inspector.{SaladType, TypeReflector, TypeExpander}
 
 trait SampleTypes {
   def sampleType: SaladType
@@ -13,16 +11,16 @@ trait SampleTypes {
 
 object TypesByMacro extends SampleTypes{
   def sampleType = {
-    TypeInspector.inspect[SampleType]
+    TypeExpander.inspect[SampleType]
   }
   def nestedPackage = {
-    TypeInspector.inspect[x1.x2.Nested]
+    TypeExpander.inspect[x1.x2.Nested]
   }
   def nestedInObject = {
-    TypeInspector.inspect[x1.x2.FooObject.InnerObject]
+    TypeExpander.inspect[x1.x2.FooObject.InnerObject]
   }
   def nestedInTrait = {
-    TypeInspector.inspect[x1.x2.FooTrait#InnerTrait]
+    TypeExpander.inspect[x1.x2.FooTrait#InnerTrait]
   }
 }
 
