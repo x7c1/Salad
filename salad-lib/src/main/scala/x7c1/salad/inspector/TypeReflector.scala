@@ -23,7 +23,7 @@ object TypeReflector {
 
       new SaladType(
         packageName = findPackage(target.typeSymbol.owner),
-        typedName = target.toString,
+        fullName = target.typeSymbol.fullName,
         typeArguments = target.typeArgs.map(buildFrom),
         members = fields.toList )
     }

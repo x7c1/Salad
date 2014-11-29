@@ -17,10 +17,10 @@ object TypesByMacro extends SampleTypes{
     TypeExpander.inspect[x1.x2.Nested]
   }
   def nestedInObject = {
-    TypeExpander.inspect[x1.x2.FooObject.InnerObject]
+    TypeExpander.inspect[x1.x2.FooObject.InObject]
   }
   def nestedInTrait = {
-    TypeExpander.inspect[x1.x2.FooTrait#InnerTrait]
+    TypeExpander.inspect[x1.x2.FooTrait#InTrait]
   }
 }
 
@@ -32,10 +32,10 @@ object TypesByReflection extends SampleTypes {
     TypeReflector.inspect[x1.x2.Nested]
   }
   def nestedInTrait = {
-    TypeReflector.inspect[x1.x2.FooTrait#InnerTrait]
+    TypeReflector.inspect[x1.x2.FooTrait#InTrait]
   }
   def nestedInObject = {
-    TypeReflector.inspect[x1.x2.FooObject.InnerObject]
+    TypeReflector.inspect[x1.x2.FooObject.InObject]
   }
 }
 
@@ -60,10 +60,10 @@ package x1 {
       def foo: Int
     }
     trait FooTrait {
-      trait InnerTrait
+      trait InTrait
     }
     object FooObject {
-      trait InnerObject
+      trait InObject
     }
   }
 }

@@ -6,6 +6,15 @@ class SaladType(
    * otherwise none (e.g. if defined in object, trait, class)
    */
   val packageName: Option[String],
-  val typedName: String,
+  val fullName: String,
   val typeArguments: Seq[SaladType],
-  val members: Seq[SaladField])
+  val members: Seq[SaladField]){
+
+  lazy val typedName = {
+    def expand(x: SaladType): String = x.fullName + {
+      if (x.typeArguments.isEmpty) ""
+      else x.typeArguments.map(expand).mkString("[", ",", "]")
+    }
+    expand(this)
+  }
+}

@@ -30,17 +30,17 @@ private object TypeExpanderImpl {
 
       createType(
         packageName = findPackage(target.typeSymbol.owner),
-        typedName = target.toString,
+        fullName = target.typeSymbol.fullName,
         typeArguments = target.typeArgs.map(x => buildFrom(x)),
         memberTrees = fields.toList )
     }
     def createType(
       packageName: Option[String],
-      typedName: String,
+      fullName: String,
       typeArguments: List[Tree],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[SaladType]}($packageName, $typedName, $typeArguments, $memberTrees)"
+      q"new ${typeOf[SaladType]}($packageName, $fullName, $typeArguments, $memberTrees)"
     }
 
     def createField(decodedName: String, typeTree: Tree) = {
