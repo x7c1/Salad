@@ -36,6 +36,7 @@ trait SampleMemberType {
   def listFloatValue: List[Float]
   def `quoted-1.2.3`: String
   def genericValue: GenericDisplayType[String, GenericDisplayType[Int, Float]]
+  def values: Seq[GenericDisplayType[String, Int]]
 }
 
 trait GenericDisplayType[A, B] {

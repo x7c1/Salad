@@ -14,7 +14,7 @@ object TypeReflection {
     def buildFrom(target: Type): SaladType = {
       val fields = target.members.view.
         filter(x => x.isMethod && x.isAbstract).
-        filter(! _.owner.fullName.startsWith("scala")).
+        filter(! _.owner.fullName.startsWith("scala.")).
         map(_.asMethod).filter(_.paramLists.isEmpty).
         map{ method =>
           val resultType =  method.typeSignatureIn(target).resultType
@@ -26,6 +26,7 @@ object TypeReflection {
       new SaladType(
         packageName = findPackage(target.typeSymbol.owner),
         typedName = target.toString,
+        typeArguments = target.typeArgs.map(buildFrom),
         members = fields.toList )
     }
     buildFrom(target.tpe)

@@ -4,7 +4,7 @@ import x7c1.salad.reflect.TypeReflection
 
 object TypeStructureTest extends Specification {
   TypeStructureSample.getClass.getSimpleName should {
-    "inspect a type structure" in {
+    "inspect a type structure by macro" in {
       val x = TypeStructureSample.value1
       x.typedName === classOf[SampleMemberType].getName
 
@@ -28,6 +28,10 @@ object TypeStructureTest extends Specification {
       y.decodedName === "valueB"
       y.resultType.typedName ===
         "x7c1.salad.sample.GenericDisplayType[Int,Float]"
+
+      val Some(x5) = x.members.find(_.decodedName == "values")
+      val Some(y1) = x5.resultType.typeArguments.head.members.find(_.decodedName === "valueB")
+      y1.resultType.typedName === "Int"
     }
     "inspect nested" in {
       val x = TypeStructureSample.nested
@@ -47,7 +51,7 @@ object TypeStructureTest extends Specification {
 
 object TypeReflectionTest extends Specification {
   TypeReflection.getClass.getSimpleName should {
-    "inspect reflect" in {
+    "inspect a type structure by reflection" in {
       val x = TypeStructureSample.reflect
       x.typedName === classOf[SampleMemberType].getName
 
@@ -71,6 +75,10 @@ object TypeReflectionTest extends Specification {
       y.decodedName === "valueB"
       y.resultType.typedName ===
         "x7c1.salad.sample.GenericDisplayType[scala.Int,scala.Float]"
+
+      val Some(x5) = x.members.find(_.decodedName == "values")
+      val Some(y1) = x5.resultType.typeArguments.head.members.find(_.decodedName === "valueB")
+      y1.resultType.typedName === "scala.Int"
     }
     "inspect nested" in {
       val x = TypeStructureSample.reflectNestedPackage

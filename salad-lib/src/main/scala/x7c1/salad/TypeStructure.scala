@@ -17,7 +17,7 @@ private object TypeStructureImpl {
     def buildFrom(target: Type): Tree = {
       val fields = target.members.
         filter(x => x.isMethod && x.isAbstract).
-        filter(! _.owner.fullName.startsWith("scala")).
+        filter(! _.owner.fullName.startsWith("scala.")).
         map(_.asMethod).map {
           method =>
             method -> method.typeSignatureIn(target)
@@ -31,14 +31,16 @@ private object TypeStructureImpl {
       createType(
         packageName = findPackage(target.typeSymbol.owner),
         typedName = target.toString,
+        typeArguments = target.typeArgs.map(x => buildFrom(x)),
         memberTrees = fields.toList )
     }
     def createType(
       packageName: Option[String],
       typedName: String,
+      typeArguments: List[Tree],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[SaladType]}($packageName, $typedName, $memberTrees)"
+      q"new ${typeOf[SaladType]}($packageName, $typedName, $typeArguments, $memberTrees)"
     }
 
     def createField(decodedName: String, typeTree: Tree) = {
@@ -55,6 +57,7 @@ class SaladType(
    */
   val packageName: Option[String],
   val typedName: String,
+  val typeArguments: Seq[SaladType],
   val members: Seq[SaladField])
 
 class SaladField(
