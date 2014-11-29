@@ -15,10 +15,10 @@ object TypeFactoryImpl {
     val pairs = klass.members.
       filter(_.isMethod).filter(_.isAbstract).map(_.asMethod).
       map {
-      method => method.name -> method.typeSignatureIn(klass)
-    } collect {
-      case (term, NullaryMethodType(resultType)) => term -> resultType
-    }
+        method => method.name -> method.typeSignatureIn(klass)
+      } collect {
+        case (term, NullaryMethodType(resultType)) => term -> resultType
+      }
 
     val inner = {
       val tuples = pairs.zipWithIndex.map{ case ((term, _), index) =>
