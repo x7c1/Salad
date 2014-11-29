@@ -1,13 +1,13 @@
-package x7c1.salad
+package x7c1.salad.factory
 
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
-object Salad {
-  def Factory[A]: Any = macro SaladImpl.factory[A]
+object TypeFactory {
+  def apply[A]: Any = macro TypeFactoryImpl.factory[A]
 }
 
-object SaladImpl {
+object TypeFactoryImpl {
   def factory[A: c.WeakTypeTag](c: whitebox.Context) = {
     import c.universe._
 
@@ -15,10 +15,10 @@ object SaladImpl {
     val pairs = klass.members.
       filter(_.isMethod).filter(_.isAbstract).map(_.asMethod).
       map {
-        method => method.name -> method.typeSignatureIn(klass)
-      } collect {
-        case (term, NullaryMethodType(resultType)) => term -> resultType
-      }
+      method => method.name -> method.typeSignatureIn(klass)
+    } collect {
+      case (term, NullaryMethodType(resultType)) => term -> resultType
+    }
 
     val inner = {
       val tuples = pairs.zipWithIndex.map{ case ((term, _), index) =>

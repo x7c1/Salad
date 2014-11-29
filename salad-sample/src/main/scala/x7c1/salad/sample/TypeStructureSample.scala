@@ -1,6 +1,6 @@
 package x7c1.salad.sample
 
-import x7c1.salad.inspector.{SaladType, TypeReflector, TypeExpander}
+import x7c1.salad.inspector.{SaladType, TypeExpander, TypeReflector}
 
 trait SampleTypes {
   def sampleType: SaladType
@@ -38,7 +38,6 @@ object TypesByReflection extends SampleTypes {
     TypeReflector.inspect[x1.x2.FooObject.InObject]
   }
 }
-
 trait SampleType {
   def intValue: Int
   def stringValue: String

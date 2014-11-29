@@ -1,11 +1,12 @@
 package x7c1.salad.sample
 
-import x7c1.salad.Salad.Factory
+import x7c1.salad.factory.TypeFactory
+
 import scala.language.reflectiveCalls
 
-object SaladSample {
+object TypeFactorySample {
 
-  def Sample = Factory[Sample]
+  def Sample = TypeFactory[Sample]
   def val2 = {
     val x = Sample(
       value1 = 123,
@@ -15,7 +16,7 @@ object SaladSample {
     x.value2
   }
 
-  def SubSample = Factory[SubSample]
+  def SubSample = TypeFactory[SubSample]
   def val4 = {
     val x = SubSample(
       value1 = 345,
@@ -28,13 +29,13 @@ object SaladSample {
   }
 
   def val5 = {
-    val GenericSample1 = Factory[GenericSample1[String]]
+    val GenericSample1 = TypeFactory[GenericSample1[String]]
     val x = GenericSample1(genericValue1 = "foo5")
     x.genericValue1
   }
 
   def val7 = {
-    val GenericMixin = Factory[GenericMixin]
+    val GenericMixin = TypeFactory[GenericMixin]
     val x = GenericMixin(
       genericValue1 = 777,
       genericValue2 = "bar"
