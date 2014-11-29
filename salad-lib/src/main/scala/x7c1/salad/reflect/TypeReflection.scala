@@ -5,8 +5,11 @@ import x7c1.salad.{SaladField, SaladType}
 import scala.reflect.runtime.universe._
 
 object TypeReflection {
-  def inspect[A: WeakTypeTag] = {
+  def inspect[A: WeakTypeTag]: SaladType = {
     val target = implicitly[WeakTypeTag[A]]
+
+    def findPackage(symbol: Symbol) =
+      if (symbol.isPackage) Some(symbol.fullName) else None
 
     def buildFrom(target: Type): SaladType = {
       val fields = target.members.view.
@@ -21,6 +24,7 @@ object TypeReflection {
         }
 
       new SaladType(
+        packageName = findPackage(target.typeSymbol.owner),
         typedName = target.toString,
         members = fields.toList )
     }
