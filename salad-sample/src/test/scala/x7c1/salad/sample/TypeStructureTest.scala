@@ -20,7 +20,7 @@ trait CommonTests {
     x2.typedName === "x7c1.salad.sample.x1.x2.FooObject.InObject"
   }
 
-  "inspect quoted type name" in {
+  "inspect quoted field name" in {
     val x1 = types.sampleType
     val x2 = x1.members.find(_.decodedName == "quoted-1.2.3")
     x2.isDefined === true
@@ -57,7 +57,6 @@ trait CommonTests {
     val Some(y1) = x5.resultType.typeArguments.head.members.find(_.decodedName === "valueB")
     y1.resultType.typedName === "scala.Int"
   }
-
 }
 
 object TypeStructureTest extends Specification with CommonTests {
