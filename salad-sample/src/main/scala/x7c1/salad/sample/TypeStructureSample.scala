@@ -1,12 +1,12 @@
 package x7c1.salad.sample
 
-import x7c1.salad.inspector.{SaladType, TypeExpander, TypeReflector}
+import x7c1.salad.inspector.{TypeDigest, TypeExpander, TypeReflector}
 
 trait SampleTypes {
-  def sampleType: SaladType
-  def nestedPackage: SaladType
-  def nestedInTrait: SaladType
-  def nestedInObject: SaladType
+  def sampleType: TypeDigest
+  def nestedPackage: TypeDigest
+  def nestedInTrait: TypeDigest
+  def nestedInObject: TypeDigest
 }
 
 object TypesByMacro extends SampleTypes{

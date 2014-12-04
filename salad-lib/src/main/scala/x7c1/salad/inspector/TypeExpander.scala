@@ -4,7 +4,7 @@ import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
 object TypeExpander {
-  def inspect[A]: SaladType = macro TypeExpanderImpl.inspect[A]
+  def inspect[A]: TypeDigest = macro TypeExpanderImpl.inspect[A]
 }
 
 private object TypeExpanderImpl {
@@ -40,11 +40,11 @@ private object TypeExpanderImpl {
       typeArguments: List[Tree],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[SaladType]}($packageName, $fullName, $typeArguments, $memberTrees)"
+      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, $memberTrees)"
     }
 
     def createField(decodedName: String, typeTree: Tree) = {
-      q"new ${typeOf[SaladField]}($decodedName, $typeTree)"
+      q"new ${typeOf[FieldSummary]}($decodedName, $typeTree)"
     }
     buildFrom(weakTypeOf[A])
   }
