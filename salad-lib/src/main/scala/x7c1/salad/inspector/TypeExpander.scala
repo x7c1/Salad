@@ -19,14 +19,14 @@ private object TypeExpanderImpl {
         filter(x => x.isMethod && x.isAbstract).
         filter(! _.owner.fullName.startsWith("scala.")).
         map(_.asMethod).map {
-        method =>
-          method -> method.typeSignatureIn(target)
-      } collect {
-        case (method, NullaryMethodType(resultType)) =>
-          createField(
-            decodedName = method.name.decodedName.toString,
-            typeTree = buildFrom(resultType))
-      }
+          method =>
+            method -> method.typeSignatureIn(target)
+        } collect {
+          case (method, NullaryMethodType(resultType)) =>
+            createField(
+              decodedName = method.name.decodedName.toString,
+              typeTree = buildFrom(resultType))
+        }
 
       createType(
         packageName = findPackage(target.typeSymbol.owner),
