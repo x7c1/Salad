@@ -4,10 +4,11 @@ class ObjectOutline (val methods: Seq[MethodSignature])
 
 class MethodSignature(
   val decodedName: String,
-  //  val argsList: Seq[Seq[MethodArgument]],
+  val argumentsList: Seq[Seq[MethodArgument]],
   val resultType: TypeDigest
 )
 
-//class MethodArgument(
-//  val name: String,
-//  val typeDigest: TypeDigest)
+class MethodArgument(
+  val name: String,
+  val typeDigest: TypeDigest
+)
