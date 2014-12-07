@@ -1,6 +1,9 @@
 package x7c1.salad.inspector
 
-class ObjectOutline (val methods: Seq[MethodSignature])
+class ObjectOutline (
+  val fullName: String,
+  val decodedName: String,
+  val methods: Seq[MethodSignature])
 
 class MethodSignature(
   val decodedName: String,

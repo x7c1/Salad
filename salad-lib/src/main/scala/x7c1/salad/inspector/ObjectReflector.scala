@@ -24,7 +24,11 @@ class ObjectReflector(
           buildDigestFrom(resultType))
       }
 
-    new ObjectOutline(methods.toList)
+    new ObjectOutline(
+      target.tpe.typeSymbol.fullName,
+      target.tpe.typeSymbol.name.decodedName.toString,
+      methods.toList
+    )
   }
 }
 

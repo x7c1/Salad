@@ -4,6 +4,9 @@ import org.specs2.mutable.Specification
 object ObjectStructureTest extends Specification {
   "inspect object methods" in {
     val x = ObjectInspectorByReflection.sample
+    x.fullName === "x7c1.salad.sample.SampleObject"
+    x.decodedName === "SampleObject"
+
     val Some(method) = x.methods.find(_.decodedName == "sampleMethod")
     method.resultType.typedName === "scala.collection.Seq[x7c1.salad.sample.SampleType]"
 
