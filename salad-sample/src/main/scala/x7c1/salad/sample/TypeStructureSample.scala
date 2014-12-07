@@ -38,6 +38,7 @@ object TypesByReflection extends SampleTypes {
     TypeReflector.inspect[x1.x2.FooObject.InObject]
   }
 }
+
 trait SampleType {
   def intValue: Int
   def stringValue: String
