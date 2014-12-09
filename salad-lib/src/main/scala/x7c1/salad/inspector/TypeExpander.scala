@@ -40,7 +40,7 @@ private object TypeExpanderImpl {
       typeArguments: List[Tree],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, $memberTrees)"
+      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, ???, ???, $memberTrees)"
     }
 
     def createField(decodedName: String, typeTree: Tree) = {

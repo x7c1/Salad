@@ -28,6 +28,9 @@ object TypesByReflection extends SampleTypes {
   def sampleType = {
     TypeReflector.inspect[SampleType]
   }
+  def sampleType2 = {
+    TypeReflector.inspect[SampleType2]
+  }
   def nestedPackage = {
     TypeReflector.inspect[x1.x2.Nested]
   }
@@ -49,10 +52,23 @@ trait SampleType {
   def values: Seq[GenericDisplayType[String, Int]]
 }
 
-trait GenericDisplayType[A, B] {
+trait GenericDisplayType[X, Y] {
   def foo(x: Double): Double
-  def valueB: B
+  def valueB: Y
 }
+
+trait GenericType2[S, Q <: S]{
+  def genericFunction: S => Q
+  def genericSeq: GenericDisplayType[S, Seq[Q]]
+}
+
+trait SampleType2 {
+  def genericValue: GenericType2[SampleInnerType2, SampleInnerSubType2]
+}
+
+trait SampleInnerType2
+
+trait SampleInnerSubType2 extends SampleInnerType2
 
 package x1 {
   package x2 {

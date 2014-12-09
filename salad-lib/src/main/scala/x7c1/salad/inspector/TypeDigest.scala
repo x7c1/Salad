@@ -7,13 +7,15 @@ class TypeDigest(
    */
   val packageName: Option[String],
   val fullName: String,
-  val typeArguments: Seq[TypeDigest],
+  val typeArgs: Seq[TypeDigest],
+  val rawTypeArgs: Option[String],
+  val rawTypeFields: Seq[RawTypeField],
   val members: Seq[FieldSummary]){
 
   lazy val typedName = {
     def expand(x: TypeDigest): String = x.fullName + {
-      if (x.typeArguments.isEmpty) ""
-      else x.typeArguments.map(expand).mkString("[", ",", "]")
+      if (x.typeArgs.isEmpty) ""
+      else x.typeArgs.map(expand).mkString("[", ",", "]")
     }
     expand(this)
   }
