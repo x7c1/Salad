@@ -15,19 +15,9 @@ trait TypeDigestFactory {
         val resultType =  method.typeSignatureIn(target).resultType
         new FieldSummary(
           decodedName = method.name.decodedName.toString,
+          rawTypeLabel = method.returnType.resultType.toString,
           resultType = buildDigestFrom(resultType))
     }
-
-    val rawFields = target.members.view
-      .filter(x => nameFilter(x.owner.fullName))
-      .filter(x => x.isMethod && x.isAbstract)
-      .map(_.asMethod).filter(_.paramLists.isEmpty)
-      .map{ method =>
-        new RawTypeField(
-          decodedName = method.name.decodedName.toString,
-          rawTypeLabel = method.returnType.resultType.toString )
-    }
-
     val rawTypeParameters = {
       val name = target.typeSymbol.fullName
       target.etaExpand.toString.split(name) match {
@@ -45,16 +35,10 @@ trait TypeDigestFactory {
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
       typeArgs = target.typeArgs.map(buildDigestFrom),
-      rawTypeArgs = rawTypeParameters,
-      rawTypeFields = rawFields.toList,
+      rawTypeArgsLabel = rawTypeParameters,
       members = fields.toList )
   }
   private def findPackage(symbol: Symbol) =
     if (symbol.isPackage) Some(symbol.fullName)
     else None
 }
-
-class RawTypeField(
-  val decodedName: String,
-  val rawTypeLabel: String
-)

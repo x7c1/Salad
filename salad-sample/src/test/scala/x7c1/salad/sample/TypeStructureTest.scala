@@ -57,34 +57,46 @@ trait CommonTests {
     val Some(y1) = x5.resultType.typeArgs.head.members.find(_.decodedName === "valueB")
     y1.resultType.typedName === "scala.Int"
   }
+
+  "inspect raw type parameters" in {
+    val x = types.sampleType2
+    x.rawTypeArgsLabel === None
+
+    val Some(x4) = x.members.find(_.decodedName == "genericValue")
+    x4.resultType.rawTypeArgsLabel === Some("[S, Q <: S]")
+    x4.resultType.members.
+      find(_.decodedName == "genericFunction").map(_.rawTypeLabel) ===
+      Some("S => Q")
+
+    val Some(x7) = x4.resultType.members.find(_.decodedName == "genericSeq")
+    x7.resultType.rawTypeArgsLabel === Some("[X, Y]")
+    x7.resultType.members.
+      find(_.decodedName == "valueB").map(_.rawTypeLabel) ===
+      Some("Y")
+  }
+
 }
 
 object TypeStructureTest extends Specification with CommonTests {
   override def types = TypesByMacro
+
+  "inspect raw type parameters of scala.*" in {
+    val x = types.sampleType2
+    val Some(x4) = x.members.find(_.decodedName == "genericValue")
+    x4.resultType.members.
+      find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
+      Some("x7c1.salad.sample.GenericDisplayType[S,Seq[Q]]")
+  }
 }
 
 object TypeReflectionTest extends Specification with CommonTests{
   override def types = TypesByReflection
 
-  "inspect raw type parameters" in {
+  "inspect raw type parameters of scala.*" in {
     val x = types.sampleType2
-    x.rawTypeArgs === None
-
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
-    x4.resultType.rawTypeArgs === Some("[S, Q <: S]")
-    x4.resultType.rawTypeFields.
-      find(_.decodedName == "genericFunction").map(_.rawTypeLabel) ===
-        Some("S => Q")
-
-    x4.resultType.rawTypeFields.
+    x4.resultType.members.
       find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
-        Some("x7c1.salad.sample.GenericDisplayType[S,scala.Seq[Q]]")
-
-    val Some(x7) = x4.resultType.members.find(_.decodedName == "genericSeq")
-    x7.resultType.rawTypeArgs === Some("[X, Y]")
-    x7.resultType.rawTypeFields.
-      find(_.decodedName == "valueB").map(_.rawTypeLabel) ===
-        Some("Y")
+      Some("x7c1.salad.sample.GenericDisplayType[S,scala.Seq[Q]]")
   }
-
 }

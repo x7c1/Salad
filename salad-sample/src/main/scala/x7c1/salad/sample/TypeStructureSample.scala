@@ -4,6 +4,8 @@ import x7c1.salad.inspector.{TypeDigest, TypeExpander, TypeReflector}
 
 trait SampleTypes {
   def sampleType: TypeDigest
+  def sampleType2: TypeDigest
+
   def nestedPackage: TypeDigest
   def nestedInTrait: TypeDigest
   def nestedInObject: TypeDigest
@@ -12,6 +14,9 @@ trait SampleTypes {
 object TypesByMacro extends SampleTypes{
   def sampleType = {
     TypeExpander.inspect[SampleType]
+  }
+  def sampleType2 = {
+    TypeExpander.inspect[SampleType2]
   }
   def nestedPackage = {
     TypeExpander.inspect[x1.x2.Nested]

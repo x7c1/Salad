@@ -25,26 +25,41 @@ private object TypeExpanderImpl {
           case (method, NullaryMethodType(resultType)) =>
             createField(
               decodedName = method.name.decodedName.toString,
+              rawTypeLabel = method.returnType.resultType.toString,
               typeTree = buildFrom(resultType))
         }
 
+      val rawTypeParams = {
+        val pattern = s"""\\((.*)${target.typeSymbol.fullName}.*""".r
+        target.erasure.etaExpand.toString match {
+          /*
+            e.g.
+            target => trait Foo[S, Q <: S]
+              x => [S, Q <: S]
+           */
+          case pattern(x) => Some(x)
+          case _ => None
+        }
+      }
       createType(
         packageName = findPackage(target.typeSymbol.owner),
         fullName = target.typeSymbol.fullName,
         typeArguments = target.typeArgs.map(x => buildFrom(x)),
+        rawTypeArgs = rawTypeParams,
         memberTrees = fields.toList )
     }
     def createType(
       packageName: Option[String],
       fullName: String,
       typeArguments: List[Tree],
+      rawTypeArgs: Option[String],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, ???, ???, $memberTrees)"
+      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, $rawTypeArgs, $memberTrees)"
     }
 
-    def createField(decodedName: String, typeTree: Tree) = {
-      q"new ${typeOf[FieldSummary]}($decodedName, $typeTree)"
+    def createField(decodedName: String, rawTypeLabel: String, typeTree: Tree) = {
+      q"new ${typeOf[FieldSummary]}($decodedName, $rawTypeLabel, $typeTree)"
     }
     buildFrom(weakTypeOf[A])
   }
