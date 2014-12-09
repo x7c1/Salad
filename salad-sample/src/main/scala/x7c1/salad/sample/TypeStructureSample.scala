@@ -53,18 +53,18 @@ trait SampleType {
 
   def listFloatValue: List[Float]
   def `quoted-1.2.3`: Int
-  def genericValue: GenericDisplayType[String, GenericDisplayType[Int, Float]]
-  def values: Seq[GenericDisplayType[String, Int]]
+  def genericValue: GenericType[String, GenericType[Int, Float]]
+  def values: Seq[GenericType[String, Int]]
 }
 
-trait GenericDisplayType[X, Y] {
+trait GenericType[X, Y] {
   def foo(x: Double): Double
   def valueB: Y
 }
 
 trait GenericType2[S, Q <: S]{
   def genericFunction: S => Q
-  def genericSeq: GenericDisplayType[S, Seq[Q]]
+  def genericSeq: GenericType[S, Seq[Q]]
 }
 
 trait SampleType2 {
