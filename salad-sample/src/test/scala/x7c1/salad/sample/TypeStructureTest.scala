@@ -1,5 +1,6 @@
 package x7c1.salad.sample
 import org.specs2.mutable.Specification
+import x7c1.salad.inspector.FieldSummary
 
 trait CommonTests {
   this: Specification =>
@@ -58,28 +59,31 @@ trait CommonTests {
     y1.resultType.typedName === "scala.Int"
   }
 
+  object typeLabel {
+    class Inner(name: String){
+      def in(summary: FieldSummary) =
+        summary.resultType.members.find(_.decodedName == name).map(_.resultTypeRawLabel)
+    }
+    def of(name: String) = new Inner(name)
+  }
+
   "inspect raw type parameters" in {
     val x = types.sampleType2
     x.typeArgsRawLabel === None
 
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.typeArgsRawLabel === Some("[S, Q <: S]")
-    x4.resultType.members.
-      find(_.decodedName == "genericFunction").map(_.resultTypeRawLabel) ===
-      Some("scala.Function1[S,Q]")
+    (typeLabel of "genericFunction" in x4) === Some("scala.Function1[S,Q]")
 
     val Some(x7) = x4.resultType.members.find(_.decodedName == "genericSeq")
     x7.resultType.typeArgsRawLabel === Some("[X, Y]")
-    x7.resultType.members.
-      find(_.decodedName == "valueB").map(_.resultTypeRawLabel) ===
-      Some("Y")
+    (typeLabel of "valueB" in x7) === Some("Y")
   }
 
   "inspect raw type parameters of scala.*" in {
     val x = types.sampleType2
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
-    x4.resultType.members.
-      find(_.decodedName == "genericSeq").map(_.resultTypeRawLabel) ===
+    (typeLabel of "genericSeq" in x4) ===
       Some("x7c1.salad.sample.GenericType[S,scala.collection.Seq[Q]]")
   }
 
@@ -89,12 +93,9 @@ trait CommonTests {
     x2.resultType.typeArgsRawLabel === Some("[A]")
     x2.resultType.typedName === "x7c1.salad.sample.InnerMergedType[java.lang.String]"
 
-    def labelOf(x: String) =
-      x2.resultType.members.find(_.decodedName == x).map(_.resultTypeRawLabel)
-
-    labelOf("foo") === Some("A")
-    labelOf("bar") === Some("scala.Int")
-    labelOf("baz") === Some("scala.Long")
+    (typeLabel of "foo" in x2) === Some("A")
+    (typeLabel of "bar" in x2) === Some("scala.Int")
+    (typeLabel of "baz" in x2) === Some("scala.Long")
   }
 }
 
