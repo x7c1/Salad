@@ -12,11 +12,11 @@ trait TypeDigestFactory {
       filter(x => x.isMethod && x.isAbstract).
       map(_.asMethod).filter(_.paramLists.isEmpty).
       map{ method =>
-        val resultType =  method.typeSignatureIn(target).resultType
+        val resultOf = method.typeSignatureIn(_: Type).resultType
         new FieldSummary(
           decodedName = method.name.decodedName.toString,
-          resultTypeRawLabel = buildRawLabelFrom(method.returnType.resultType),
-          resultType = buildDigestFrom(resultType))
+          resultTypeRawLabel = buildRawLabelFrom(resultOf(target.etaExpand)),
+          resultType = buildDigestFrom(resultOf(target)))
       }
 
     val rawTypeArgs = {

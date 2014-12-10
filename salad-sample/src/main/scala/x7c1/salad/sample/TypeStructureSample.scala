@@ -5,6 +5,7 @@ import x7c1.salad.inspector.{TypeDigest, TypeExpander, TypeReflector}
 trait SampleTypes {
   def sampleType: TypeDigest
   def sampleType2: TypeDigest
+  def mergedType: TypeDigest
 
   def nestedPackage: TypeDigest
   def nestedInTrait: TypeDigest
@@ -17,6 +18,9 @@ object TypesByMacro extends SampleTypes{
   }
   def sampleType2 = {
     TypeExpander.inspect[SampleType2]
+  }
+  def mergedType = {
+    TypeExpander.inspect[MergedType]
   }
   def nestedPackage = {
     TypeExpander.inspect[x1.x2.Nested]
@@ -36,6 +40,9 @@ object TypesByReflection extends SampleTypes {
   def sampleType2 = {
     TypeReflector.inspect[SampleType2]
   }
+  def mergedType = {
+    TypeReflector.inspect[MergedType]
+  }
   def nestedPackage = {
     TypeReflector.inspect[x1.x2.Nested]
   }
@@ -45,6 +52,24 @@ object TypesByReflection extends SampleTypes {
   def nestedInObject = {
     TypeReflector.inspect[x1.x2.FooObject.InObject]
   }
+}
+
+trait MergedType {
+  def value: InnerMergedType[String]
+}
+
+trait InnerMergedType[A] extends
+  TypeToMixin1[A, Int] with
+  TypeToMixin2[A, Long]
+
+trait TypeToMixin1 [T, U]{
+  def foo: T
+  def bar: U
+}
+
+trait TypeToMixin2 [R, S]{
+  def foo: R
+  def baz: S
 }
 
 trait SampleType {

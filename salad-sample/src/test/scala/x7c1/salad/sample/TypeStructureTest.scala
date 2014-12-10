@@ -83,6 +83,19 @@ trait CommonTests {
       Some("x7c1.salad.sample.GenericType[S,scala.collection.Seq[Q]]")
   }
 
+  "inspect raw type parameters of merged structure" in {
+    val x = types.mergedType
+    val Some(x2) = x.members.find(_.decodedName == "value")
+    x2.resultType.typeArgsRawLabel === Some("[A]")
+    x2.resultType.typedName === "x7c1.salad.sample.InnerMergedType[java.lang.String]"
+
+    def labelOf(x: String) =
+      x2.resultType.members.find(_.decodedName == x).map(_.resultTypeRawLabel)
+
+    labelOf("foo") === Some("A")
+    labelOf("bar") === Some("scala.Int")
+    labelOf("baz") === Some("scala.Long")
+  }
 }
 
 object TypeStructureTest extends Specification with CommonTests {

@@ -29,15 +29,13 @@ private object TypeExpanderImpl {
       val fields = target.members.
         filter(x => x.isMethod && x.isAbstract).
         filter(! _.owner.fullName.startsWith("scala.")).
-        map(_.asMethod).map {
-          method =>
-            method -> method.typeSignatureIn(target)
-        } collect {
-          case (method, NullaryMethodType(resultType)) =>
-            createField(
-              decodedName = method.name.decodedName.toString,
-              rawTypeLabel = buildRawLabelFrom(method.returnType.resultType),
-              typeTree = buildFrom(resultType))
+        map(_.asMethod).filter(_.paramLists.isEmpty).
+        map{ method =>
+          val resultOf = method.typeSignatureIn(_: Type).resultType
+          createField(
+            decodedName = method.name.decodedName.toString,
+            rawTypeLabel = buildRawLabelFrom(resultOf(target.etaExpand)),
+            typeTree = buildFrom(resultOf(target)))
         }
 
       val rawTypeArgs = {
@@ -55,18 +53,18 @@ private object TypeExpanderImpl {
       createType(
         packageName = findPackage(target.typeSymbol.owner),
         fullName = target.typeSymbol.fullName,
-        typeArguments = target.typeArgs.map(x => buildFrom(x)),
-        rawTypeArgs = rawTypeArgs,
+        typeArgs = target.typeArgs.map(x => buildFrom(x)),
+        typeArgsLabel = rawTypeArgs,
         memberTrees = fields.toList )
     }
     def createType(
       packageName: Option[String],
       fullName: String,
-      typeArguments: List[Tree],
-      rawTypeArgs: Option[String],
+      typeArgs: List[Tree],
+      typeArgsLabel: Option[String],
       memberTrees: List[Tree]) = {
 
-      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArguments, $rawTypeArgs, $memberTrees)"
+      q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArgs, $typeArgsLabel, $memberTrees)"
     }
 
     def createField(decodedName: String, rawTypeLabel: String, typeTree: Tree) = {
