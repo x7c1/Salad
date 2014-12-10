@@ -14,6 +14,17 @@ private object TypeExpanderImpl {
     def findPackage(symbol: Symbol) =
       if (symbol.isPackage) Some(symbol.fullName) else None
 
+    def buildRawLabelFrom(target: Type): String = {
+      val name = target.typeSymbol match {
+        case x if x.isParameter => x.name.decodedName.toString
+        case x => x.fullName
+      }
+      val types = target.resultType.typeArgs.map(buildRawLabelFrom) match {
+        case x if x.nonEmpty => x.mkString("[",",","]")
+        case _ => ""
+      }
+      name + types
+    }
     def buildFrom(target: Type): Tree = {
       val fields = target.members.
         filter(x => x.isMethod && x.isAbstract).
@@ -25,7 +36,7 @@ private object TypeExpanderImpl {
           case (method, NullaryMethodType(resultType)) =>
             createField(
               decodedName = method.name.decodedName.toString,
-              rawTypeLabel = method.returnType.resultType.toString,
+              rawTypeLabel = buildRawLabelFrom(method.returnType.resultType),
               typeTree = buildFrom(resultType))
         }
 
@@ -63,4 +74,5 @@ private object TypeExpanderImpl {
     }
     buildFrom(weakTypeOf[A])
   }
+
 }

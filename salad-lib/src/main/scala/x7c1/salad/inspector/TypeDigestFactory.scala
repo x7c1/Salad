@@ -15,7 +15,7 @@ trait TypeDigestFactory {
         val resultType =  method.typeSignatureIn(target).resultType
         new FieldSummary(
           decodedName = method.name.decodedName.toString,
-          rawTypeLabel = method.returnType.resultType.toString,
+          rawTypeLabel = buildRawLabelFrom(method.returnType.resultType),
           resultType = buildDigestFrom(resultType))
       }
 
@@ -39,6 +39,19 @@ trait TypeDigestFactory {
       rawTypeArgsLabel = rawTypeArgs,
       members = fields.toList )
   }
+
+  def buildRawLabelFrom(target: Type): String = {
+    val name = target.typeSymbol match {
+      case x if x.isParameter => x.name.decodedName.toString
+      case x => x.fullName
+    }
+    val types = target.resultType.typeArgs.map(buildRawLabelFrom) match {
+      case x if x.nonEmpty => x.mkString("[",",","]")
+      case _ => ""
+    }
+    name + types
+  }
+
   private def findPackage(symbol: Symbol) =
     if (symbol.isPackage) Some(symbol.fullName)
     else None

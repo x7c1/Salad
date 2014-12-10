@@ -66,7 +66,7 @@ trait CommonTests {
     x4.resultType.rawTypeArgsLabel === Some("[S, Q <: S]")
     x4.resultType.members.
       find(_.decodedName == "genericFunction").map(_.rawTypeLabel) ===
-      Some("S => Q")
+      Some("scala.Function1[S,Q]")
 
     val Some(x7) = x4.resultType.members.find(_.decodedName == "genericSeq")
     x7.resultType.rawTypeArgsLabel === Some("[X, Y]")
@@ -75,28 +75,20 @@ trait CommonTests {
       Some("Y")
   }
 
+  "inspect raw type parameters of scala.*" in {
+    val x = types.sampleType2
+    val Some(x4) = x.members.find(_.decodedName == "genericValue")
+    x4.resultType.members.
+      find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
+      Some("x7c1.salad.sample.GenericType[S,scala.collection.Seq[Q]]")
+  }
+
 }
 
 object TypeStructureTest extends Specification with CommonTests {
   override def types = TypesByMacro
-
-  "inspect raw type parameters of scala.*" in {
-    val x = types.sampleType2
-    val Some(x4) = x.members.find(_.decodedName == "genericValue")
-    x4.resultType.members.
-      find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
-      Some("x7c1.salad.sample.GenericType[S,Seq[Q]]")
-  }
 }
 
 object TypeReflectionTest extends Specification with CommonTests{
   override def types = TypesByReflection
-
-  "inspect raw type parameters of scala.*" in {
-    val x = types.sampleType2
-    val Some(x4) = x.members.find(_.decodedName == "genericValue")
-    x4.resultType.members.
-      find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
-      Some("x7c1.salad.sample.GenericType[S,scala.Seq[Q]]")
-  }
 }
