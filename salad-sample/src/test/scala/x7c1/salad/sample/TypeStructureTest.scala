@@ -45,13 +45,13 @@ trait CommonTests {
 
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.typedName ===
-      "x7c1.salad.sample.GenericDisplayType[" +
-        "java.lang.String,x7c1.salad.sample.GenericDisplayType[scala.Int,scala.Float]]"
+      "x7c1.salad.sample.GenericType[" +
+        "java.lang.String,x7c1.salad.sample.GenericType[scala.Int,scala.Float]]"
 
     val y = x4.resultType.members.head
     y.decodedName === "valueB"
     y.resultType.typedName ===
-      "x7c1.salad.sample.GenericDisplayType[scala.Int,scala.Float]"
+      "x7c1.salad.sample.GenericType[scala.Int,scala.Float]"
 
     val Some(x5) = x.members.find(_.decodedName == "values")
     val Some(y1) = x5.resultType.typeArgs.head.members.find(_.decodedName === "valueB")
@@ -85,7 +85,7 @@ object TypeStructureTest extends Specification with CommonTests {
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.members.
       find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
-      Some("x7c1.salad.sample.GenericDisplayType[S,Seq[Q]]")
+      Some("x7c1.salad.sample.GenericType[S,Seq[Q]]")
   }
 }
 
@@ -97,6 +97,6 @@ object TypeReflectionTest extends Specification with CommonTests{
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.members.
       find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
-      Some("x7c1.salad.sample.GenericDisplayType[S,scala.Seq[Q]]")
+      Some("x7c1.salad.sample.GenericType[S,scala.Seq[Q]]")
   }
 }

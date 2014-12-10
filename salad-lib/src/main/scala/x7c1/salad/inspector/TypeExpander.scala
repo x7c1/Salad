@@ -29,7 +29,7 @@ private object TypeExpanderImpl {
               typeTree = buildFrom(resultType))
         }
 
-      val rawTypeParams = {
+      val rawTypeArgs = {
         val pattern = s"""\\((.*)${target.typeSymbol.fullName}.*""".r
         target.erasure.etaExpand.toString match {
           /*
@@ -45,7 +45,7 @@ private object TypeExpanderImpl {
         packageName = findPackage(target.typeSymbol.owner),
         fullName = target.typeSymbol.fullName,
         typeArguments = target.typeArgs.map(x => buildFrom(x)),
-        rawTypeArgs = rawTypeParams,
+        rawTypeArgs = rawTypeArgs,
         memberTrees = fields.toList )
     }
     def createType(

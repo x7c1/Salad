@@ -17,8 +17,9 @@ trait TypeDigestFactory {
           decodedName = method.name.decodedName.toString,
           rawTypeLabel = method.returnType.resultType.toString,
           resultType = buildDigestFrom(resultType))
-    }
-    val rawTypeParameters = {
+      }
+
+    val rawTypeArgs = {
       val name = target.typeSymbol.fullName
       target.etaExpand.toString.split(name) match {
         /*
@@ -35,7 +36,7 @@ trait TypeDigestFactory {
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
       typeArgs = target.typeArgs.map(buildDigestFrom),
-      rawTypeArgsLabel = rawTypeParameters,
+      rawTypeArgsLabel = rawTypeArgs,
       members = fields.toList )
   }
   private def findPackage(symbol: Symbol) =
