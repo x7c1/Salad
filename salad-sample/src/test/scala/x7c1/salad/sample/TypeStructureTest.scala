@@ -60,18 +60,18 @@ trait CommonTests {
 
   "inspect raw type parameters" in {
     val x = types.sampleType2
-    x.rawTypeArgsLabel === None
+    x.typeArgsRawLabel === None
 
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
-    x4.resultType.rawTypeArgsLabel === Some("[S, Q <: S]")
+    x4.resultType.typeArgsRawLabel === Some("[S, Q <: S]")
     x4.resultType.members.
-      find(_.decodedName == "genericFunction").map(_.rawTypeLabel) ===
+      find(_.decodedName == "genericFunction").map(_.resultTypeRawLabel) ===
       Some("scala.Function1[S,Q]")
 
     val Some(x7) = x4.resultType.members.find(_.decodedName == "genericSeq")
-    x7.resultType.rawTypeArgsLabel === Some("[X, Y]")
+    x7.resultType.typeArgsRawLabel === Some("[X, Y]")
     x7.resultType.members.
-      find(_.decodedName == "valueB").map(_.rawTypeLabel) ===
+      find(_.decodedName == "valueB").map(_.resultTypeRawLabel) ===
       Some("Y")
   }
 
@@ -79,7 +79,7 @@ trait CommonTests {
     val x = types.sampleType2
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.members.
-      find(_.decodedName == "genericSeq").map(_.rawTypeLabel) ===
+      find(_.decodedName == "genericSeq").map(_.resultTypeRawLabel) ===
       Some("x7c1.salad.sample.GenericType[S,scala.collection.Seq[Q]]")
   }
 

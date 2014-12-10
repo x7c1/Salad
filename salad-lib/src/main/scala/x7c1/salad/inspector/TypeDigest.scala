@@ -8,7 +8,7 @@ class TypeDigest(
   val packageName: Option[String],
   val fullName: String,
   val typeArgs: Seq[TypeDigest],
-  val rawTypeArgsLabel: Option[String],
+  val typeArgsRawLabel: Option[String],
   val members: Seq[FieldSummary]){
 
   lazy val typedName = {
