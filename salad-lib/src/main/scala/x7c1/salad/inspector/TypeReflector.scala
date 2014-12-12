@@ -13,6 +13,6 @@ class TypeReflector(
 
   def inspect[A: WeakTypeTag]: TypeDigest = {
     val target = implicitly[WeakTypeTag[A]]
-    buildDigestFrom(target.tpe)
+    createDigestFrom(target.tpe)
   }
 }

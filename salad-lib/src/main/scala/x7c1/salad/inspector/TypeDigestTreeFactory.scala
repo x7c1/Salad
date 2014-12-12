@@ -8,7 +8,7 @@ class TypeDigestTreeFactory[C <: blackbox.Context](
 
   import context.universe._
 
-  def buildFrom(target: Type): Tree = {
+  def createFrom(target: Type): Tree = {
     val fields = target.members.view.
       filter(x => x.isMethod && x.isAbstract).
       filter(x => nameFilter(x.owner.fullName)).
@@ -18,13 +18,13 @@ class TypeDigestTreeFactory[C <: blackbox.Context](
         createField(
           decodedName = method.name.decodedName.toString,
           rawTypeLabel = buildRawLabelFrom(resultOf(target.etaExpand)),
-          typeTree = buildFrom(resultOf(target)))
+          typeTree = createFrom(resultOf(target)))
       }
 
     createType(
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
-      typeArgs = target.typeArgs.map(x => buildFrom(x)),
+      typeArgs = target.typeArgs.map(x => createFrom(x)),
       typeArgsLabel = typeArgsRawLabelOf(target),
       memberTrees = fields.toList )
   }

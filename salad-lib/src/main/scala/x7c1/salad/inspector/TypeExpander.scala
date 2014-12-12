@@ -15,6 +15,6 @@ private object TypeExpanderImpl {
       context = c,
       nameFilter = ! (_: String).startsWith("scala.")
     )
-    factory.buildFrom(weakTypeOf[A]) : c.Tree
+    factory.createFrom(weakTypeOf[A]) : c.Tree
   }
 }

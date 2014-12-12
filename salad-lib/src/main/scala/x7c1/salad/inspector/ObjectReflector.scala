@@ -10,7 +10,7 @@ class ObjectReflector(
     def toMethodArgument(symbol: Symbol) = {
       new MethodArgument(
         symbol.name.toString,
-        buildDigestFrom(symbol.typeSignature))
+        createDigestFrom(symbol.typeSignature))
     }
     val methods = target.tpe.members.view.
       filter(x => nameFilter(x.owner.fullName)).
@@ -21,7 +21,7 @@ class ObjectReflector(
         new MethodSignature(
           method.name.decodedName.toString,
           method.paramLists.map(_ map toMethodArgument),
-          buildDigestFrom(resultType))
+          createDigestFrom(resultType))
       }
 
     new ObjectOutline(

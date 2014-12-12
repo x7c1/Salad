@@ -6,7 +6,7 @@ trait TypeDigestFactory {
 
   def nameFilter: String => Boolean
 
-  def buildDigestFrom(target: Type): TypeDigest = {
+  def createDigestFrom(target: Type): TypeDigest = {
     val fields = target.members.view.
       filter(x => nameFilter(x.owner.fullName)).
       filter(x => x.isMethod && x.isAbstract).
@@ -16,18 +16,18 @@ trait TypeDigestFactory {
         new FieldSummary(
           decodedName = method.name.decodedName.toString,
           resultTypeRawLabel = buildRawLabelFrom(resultOf(target.etaExpand)),
-          resultType = buildDigestFrom(resultOf(target)))
+          resultType = createDigestFrom(resultOf(target)))
       }
 
     new TypeDigest(
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
-      typeArgs = target.typeArgs.map(buildDigestFrom),
+      typeArgs = target.typeArgs.map(createDigestFrom),
       typeArgsRawLabel = typeArgsRawLabelOf(target),
       members = fields.toList )
   }
 
-  def typeArgsRawLabelOf(target: Type): Option[String] = {
+  private def typeArgsRawLabelOf(target: Type): Option[String] = {
     val name = target.typeSymbol.fullName
     target.etaExpand.toString.split(name) match {
       /*
@@ -41,7 +41,7 @@ trait TypeDigestFactory {
     }
   }
 
-  def buildRawLabelFrom(target: Type): String = {
+  private def buildRawLabelFrom(target: Type): String = {
     val name = target.typeSymbol match {
       case x if x.isParameter => x.name.decodedName.toString
       case x => x.fullName
