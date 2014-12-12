@@ -64,7 +64,8 @@ class TypeDigestTreeFactory[C <: blackbox.Context](
     typeArgsLabel: Option[String],
     memberTrees: List[Tree]) = {
 
-    q"new ${typeOf[TypeDigest]}($packageName, $fullName, $typeArgs, $typeArgsLabel, $memberTrees)"
+    q"""new ${typeOf[TypeDigest]}(
+      $packageName, $fullName, $typeArgs, $typeArgsLabel, $memberTrees)"""
   }
 
   private def createField(decodedName: String, rawTypeLabel: String, typeTree: Tree) = {
