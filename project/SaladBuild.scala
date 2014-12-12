@@ -4,6 +4,7 @@ import sbt.Keys._
 object SaladBuild extends Build {
 
   val saladSettings = Seq(
+    organization := "x7c1",
     scalaVersion := "2.11.2",
     scalacOptions ++= Seq(
       "-deprecation",
@@ -24,6 +25,7 @@ object SaladBuild extends Build {
     dependsOn(`salad-lib`)
 
   lazy val root = Project("salad", file(".")).
+    settings(saladSettings:_*).
     aggregate(`salad-lib`, `salad-sample`)
 
 }
