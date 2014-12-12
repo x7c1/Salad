@@ -8,11 +8,10 @@ object TypeReflector {
     new TypeReflector(defaultFilter).inspect[A]
   }
 }
-class TypeReflector(
-  val nameFilter: String => Boolean) extends TypeDigestFactory {
 
+class TypeReflector(nameFilter: String => Boolean) {
   def inspect[A: WeakTypeTag]: TypeDigest = {
     val target = implicitly[WeakTypeTag[A]]
-    createDigestFrom(target.tpe)
+    new TypeDigestFactory(nameFilter) createDigestFrom target.tpe
   }
 }

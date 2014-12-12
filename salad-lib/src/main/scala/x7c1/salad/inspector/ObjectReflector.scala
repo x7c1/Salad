@@ -1,8 +1,9 @@
 package x7c1.salad.inspector
 import scala.reflect.runtime.universe._
 
-class ObjectReflector(
-  override val nameFilter: String => Boolean) extends TypeDigestFactory {
+class ObjectReflector(nameFilter: String => Boolean){
+
+  private val factory = new TypeDigestFactory(nameFilter)
 
   def inspect[A: WeakTypeTag](scrutinee: A): ObjectOutline = {
     val target = implicitly[WeakTypeTag[A]]
@@ -10,7 +11,7 @@ class ObjectReflector(
     def toMethodArgument(symbol: Symbol) = {
       new MethodArgument(
         symbol.name.toString,
-        createDigestFrom(symbol.typeSignature))
+        factory createDigestFrom symbol.typeSignature)
     }
     val methods = target.tpe.members.view.
       filter(x => nameFilter(x.owner.fullName)).
@@ -21,7 +22,7 @@ class ObjectReflector(
         new MethodSignature(
           method.name.decodedName.toString,
           method.paramLists.map(_ map toMethodArgument),
-          createDigestFrom(resultType))
+          factory createDigestFrom resultType)
       }
 
     new ObjectOutline(

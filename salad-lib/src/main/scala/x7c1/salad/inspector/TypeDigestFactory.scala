@@ -2,9 +2,7 @@ package x7c1.salad.inspector
 
 import scala.reflect.runtime.universe._
 
-trait TypeDigestFactory {
-
-  def nameFilter: String => Boolean
+class TypeDigestFactory(nameFilter: String => Boolean){
 
   def createDigestFrom(target: Type): TypeDigest = {
     val fields = target.members.view.
