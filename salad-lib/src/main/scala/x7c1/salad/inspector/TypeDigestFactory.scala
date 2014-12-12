@@ -19,25 +19,26 @@ trait TypeDigestFactory {
           resultType = buildDigestFrom(resultOf(target)))
       }
 
-    val rawTypeArgs = {
-      val name = target.typeSymbol.fullName
-      target.etaExpand.toString.split(name) match {
-        /*
-          e.g.
-          target => trait Foo[S, Q <: S]
-            x1 => [S, Q <: S]
-            x2 => [S,Q]
-         */
-        case Array(x1, x2) => Some(x1)
-        case _ => None
-      }
-    }
     new TypeDigest(
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
       typeArgs = target.typeArgs.map(buildDigestFrom),
-      typeArgsRawLabel = rawTypeArgs,
+      typeArgsRawLabel = typeArgsRawLabelOf(target),
       members = fields.toList )
+  }
+
+  def typeArgsRawLabelOf(target: Type): Option[String] = {
+    val name = target.typeSymbol.fullName
+    target.etaExpand.toString.split(name) match {
+      /*
+        e.g.
+        target => trait Foo[S, Q <: S]
+          x1 => [S, Q <: S]
+          x2 => [S,Q]
+       */
+      case Array(x1, x2) => Some(x1)
+      case _ => None
+    }
   }
 
   def buildRawLabelFrom(target: Type): String = {
