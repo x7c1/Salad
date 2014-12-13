@@ -23,7 +23,7 @@ class TypeDigestTreeFactory[C <: blackbox.Context](
     createType(
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
-      typeArgs = target.typeArgs.map(x => createFrom(x)),
+      typeArgs = target.typeArgs map createFrom,
       typeArgsLabel = typeArgsRawLabelOf(target),
       memberTrees = fields.toList )
   }
