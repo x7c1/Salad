@@ -3,8 +3,7 @@ package x7c1.salad.inspector
 import scala.reflect.macros.blackbox
 
 class TypeDigestTreeFactory[C <: blackbox.Context](
-  val context: C,
-  val nameFilter: String => Boolean ){
+  val context: C, nameFilter: String => Boolean ){
 
   import context.universe._
 
