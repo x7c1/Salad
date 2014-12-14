@@ -2,7 +2,7 @@
 
 Library using Scala macros and reflections.
 
-## Usage
+## Examples
 
 ### Traversing type structures
 
@@ -125,6 +125,17 @@ val x = GenericMixin(
 )
 x.genericValue1// 777
 ```
+
+## Usage
+
+In your sbt build definition:
+
+```scala
+lazy val `your-app` = project.
+  dependsOn(ProjectRef(uri("git://github.com/x7c1/Salad.git#0.1"), "salad-lib"))
+```
+
+Replace the tag in `Salad.git#0.1` with [latest version](https://github.com/x7c1/Salad/releases).
 
 ##License
 
