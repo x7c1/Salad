@@ -1,13 +1,13 @@
-package x7c1.salad.inspector
+package x7c1.salad.debug
 
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
-object sprint {
-  def apply[A](x: => A): Unit = macro sprintImpl.impl[A]
+object prints {
+  def apply[A](x: => A): Unit = macro printsImpl.impl[A]
 }
 
-private object sprintImpl {
+private object printsImpl {
   def impl[A: c.WeakTypeTag](c: blackbox.Context)(x: c.Expr[A]) = {
     import c.universe._
     val source = showCode(x.tree)
