@@ -20,7 +20,7 @@ object SaladBuild extends Build {
   lazy val `salad-sample` = project.
     settings(saladSettings:_*).
     settings(libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2" % "2.3.13" % Test
+      "org.scalatest" % "scalatest_2.11" % "2.2.1" % Test
     )).
     dependsOn(`salad-lib`)
 
