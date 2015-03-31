@@ -1,6 +1,6 @@
 package x7c1.salad.sample
 
-import x7c1.salad.inspector.ObjectReflector
+import x7c1.salad.inspector.reflect.ObjectReflector
 
 object ObjectInspectorByReflection {
   def sample = {

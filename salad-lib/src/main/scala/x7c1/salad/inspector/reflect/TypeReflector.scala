@@ -1,4 +1,6 @@
-package x7c1.salad.inspector
+package x7c1.salad.inspector.reflect
+
+import x7c1.salad.inspector.TypeDigest
 
 import scala.reflect.runtime.universe._
 

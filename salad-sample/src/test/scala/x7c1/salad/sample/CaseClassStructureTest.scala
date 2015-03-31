@@ -1,7 +1,7 @@
 package x7c1.salad.sample
 
 import org.scalatest.{FlatSpecLike, Matchers}
-import x7c1.salad.inspector.{TypeReflector, ObjectReflector}
+import x7c1.salad.inspector.reflect.{TypeReflector, ObjectReflector}
 
 class CaseClassStructureTest extends FlatSpecLike with Matchers {
 

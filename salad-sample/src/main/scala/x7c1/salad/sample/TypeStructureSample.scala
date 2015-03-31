@@ -1,6 +1,8 @@
 package x7c1.salad.sample
 
-import x7c1.salad.inspector.{TypeDigest, TypeExpander, TypeReflector}
+import x7c1.salad.inspector.macros.TypeExpander
+import x7c1.salad.inspector.reflect.TypeReflector
+import x7c1.salad.inspector.TypeDigest
 
 trait SampleTypes {
   def sampleType: TypeDigest

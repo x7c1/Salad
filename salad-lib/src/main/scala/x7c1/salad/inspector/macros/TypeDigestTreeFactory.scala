@@ -1,4 +1,6 @@
-package x7c1.salad.inspector
+package x7c1.salad.inspector.macros
+
+import x7c1.salad.inspector.{FieldSummary, TypeDigest}
 
 import scala.reflect.macros.blackbox
 
