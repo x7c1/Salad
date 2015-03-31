@@ -1,7 +1,6 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.inspector
 
-import org.scalatest.{Matchers, FlatSpecLike}
-
+import org.scalatest.{FlatSpecLike, Matchers}
 import x7c1.salad.inspector.FieldSummary
 
 trait TraitCommonTests {
@@ -13,17 +12,17 @@ trait TraitCommonTests {
 
   it can "inspect package" in {
     val x = types.nestedPackage
-    x.packageName shouldBe Some("x7c1.salad.sample.x1.x2")
+    x.packageName shouldBe Some("x7c1.salad.sample.inspector.x1.x2")
   }
 
   it can "inspect nested inner type" in {
     val x1 = types.nestedInTrait
     x1.packageName shouldBe None
-    x1.typedName shouldBe "x7c1.salad.sample.x1.x2.FooTrait.InTrait"
+    x1.typedName shouldBe "x7c1.salad.sample.inspector.x1.x2.FooTrait.InTrait"
 
     val x2 = types.nestedInObject
     x2.packageName shouldBe None
-    x2.typedName shouldBe "x7c1.salad.sample.x1.x2.FooObject.InObject"
+    x2.typedName shouldBe "x7c1.salad.sample.inspector.x1.x2.FooObject.InObject"
   }
 
   it can "inspect quoted field name" in {
@@ -51,13 +50,13 @@ trait TraitCommonTests {
 
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     x4.resultType.typedName shouldBe
-      "x7c1.salad.sample.GenericType[" +
-        "java.lang.String,x7c1.salad.sample.GenericType[scala.Int,scala.Float]]"
+      "x7c1.salad.sample.inspector.GenericType[" +
+        "java.lang.String,x7c1.salad.sample.inspector.GenericType[scala.Int,scala.Float]]"
 
     val y = x4.resultType.members.head
     y.decodedName shouldBe "valueB"
     y.resultType.typedName shouldBe
-      "x7c1.salad.sample.GenericType[scala.Int,scala.Float]"
+      "x7c1.salad.sample.inspector.GenericType[scala.Int,scala.Float]"
 
     val Some(x5) = x.members.find(_.decodedName == "values")
     val Some(y1) = x5.resultType.typeArgs.head.members.find(_.decodedName == "valueB")
@@ -89,14 +88,14 @@ trait TraitCommonTests {
     val x = types.sampleType2
     val Some(x4) = x.members.find(_.decodedName == "genericValue")
     (typeLabel of "genericSeq" in x4) shouldBe
-      Some("x7c1.salad.sample.GenericType[S,scala.collection.Seq[Q]]")
+      Some("x7c1.salad.sample.inspector.GenericType[S,scala.collection.Seq[Q]]")
   }
 
   it can "inspect raw type parameters of merged structure" in {
     val x = types.mergedType
     val Some(x2) = x.members.find(_.decodedName == "value")
     x2.resultType.typeArgsRawLabel shouldBe Some("[A]")
-    x2.resultType.typedName shouldBe "x7c1.salad.sample.InnerMergedType[java.lang.String]"
+    x2.resultType.typedName shouldBe "x7c1.salad.sample.inspector.InnerMergedType[java.lang.String]"
 
     (typeLabel of "foo" in x2) shouldBe Some("A")
     (typeLabel of "bar" in x2) shouldBe Some("scala.Int")

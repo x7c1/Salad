@@ -1,4 +1,4 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.inspector
 
 import x7c1.salad.inspector.reflect.ObjectReflector
 

@@ -1,4 +1,4 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.inspector
 
 import x7c1.salad.inspector.TypeDigest
 import x7c1.salad.inspector.macros.TypeExpander
@@ -22,7 +22,7 @@ object ClassesByMacro extends SampleClasses {
 case class SampleCaseClass(foo: Int, bar: String, baz: Seq[Long])
 
 class SampleClass(
-  val foo: GenericMixin,
+  val foo: MergedType,
   val bar: String,
   val baz: Seq[Long],
   privateArg: Int ){

@@ -1,8 +1,9 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.inspector
 
+import x7c1.salad.inspector.TypeDigest
 import x7c1.salad.inspector.macros.TypeExpander
 import x7c1.salad.inspector.reflect.TypeReflector
-import x7c1.salad.inspector.TypeDigest
+import x7c1.salad.sample.inspector.x1.x2.{Nested, FooTrait, FooObject}
 
 trait SampleTypes {
   def sampleType: TypeDigest
@@ -25,13 +26,13 @@ object TypesByMacro extends SampleTypes{
     TypeExpander.inspect[MergedType]
   }
   def nestedPackage = {
-    TypeExpander.inspect[x1.x2.Nested]
+    TypeExpander.inspect[Nested]
   }
   def nestedInObject = {
-    TypeExpander.inspect[x1.x2.FooObject.InObject]
+    TypeExpander.inspect[FooObject.InObject]
   }
   def nestedInTrait = {
-    TypeExpander.inspect[x1.x2.FooTrait#InTrait]
+    TypeExpander.inspect[FooTrait#InTrait]
   }
 }
 
@@ -46,13 +47,13 @@ object TypesByReflection extends SampleTypes {
     TypeReflector.inspect[MergedType]
   }
   def nestedPackage = {
-    TypeReflector.inspect[x1.x2.Nested]
+    TypeReflector.inspect[Nested]
   }
   def nestedInTrait = {
-    TypeReflector.inspect[x1.x2.FooTrait#InTrait]
+    TypeReflector.inspect[FooTrait#InTrait]
   }
   def nestedInObject = {
-    TypeReflector.inspect[x1.x2.FooObject.InObject]
+    TypeReflector.inspect[FooObject.InObject]
   }
 }
 
@@ -102,16 +103,14 @@ trait SampleInnerType2
 
 trait SampleInnerSubType2 extends SampleInnerType2
 
-package x1 {
-  package x2 {
-    trait Nested {
-      def foo: Int
-    }
-    trait FooTrait {
-      trait InTrait
-    }
-    object FooObject {
-      trait InObject
-    }
+package x1.x2 {
+  trait Nested {
+    def foo: Int
+  }
+  trait FooTrait {
+    trait InTrait
+  }
+  object FooObject {
+    trait InObject
   }
 }

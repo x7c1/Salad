@@ -1,4 +1,4 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.inspector
 
 import org.scalatest.{FlatSpecLike, Matchers}
 
@@ -25,9 +25,10 @@ trait ClassCommonTests { this: FlatSpecLike with Matchers =>
     val digest = types.sampleClass
 
     val Some(foo) = digest.members.find(_.decodedName == "foo").headOption
-    foo.resultType.typedName shouldBe classOf[GenericMixin].getName
-    val Some(fooValue) = foo.resultType.members.find(_.decodedName == "genericValue1")
-    fooValue.resultType.typedName shouldBe "scala.Int"
+    foo.resultType.typedName shouldBe classOf[MergedType].getName
+    val Some(fooValue) = foo.resultType.members.find(_.decodedName == "value")
+    fooValue.resultType.typedName shouldBe
+      "x7c1.salad.sample.inspector.InnerMergedType[java.lang.String]"
 
     val Some(bar) = digest.members.find(_.decodedName == "bar").headOption
     bar.resultType.typedName shouldBe "java.lang.String"
