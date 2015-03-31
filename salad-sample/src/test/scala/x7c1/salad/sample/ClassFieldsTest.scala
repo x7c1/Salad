@@ -1,31 +1,15 @@
 package x7c1.salad.sample
 
 import org.scalatest.{FlatSpecLike, Matchers}
-import x7c1.salad.inspector.reflect.{TypeReflector, ObjectReflector}
 
-class CaseClassStructureTest extends FlatSpecLike with Matchers {
+trait ClassCommonTests { this: FlatSpecLike with Matchers =>
 
-  behavior of ObjectReflector.getClass.getSimpleName
+  def types: SampleClasses
 
-  it can "inspect case class fields through apply-method" in {
-    val outline = ObjectReflector.inspect(SampleCaseClass)
-    val Some(signature) = outline.methods.find(_.decodedName == "apply")
-    val arguments = signature.argumentsList.flatten
+  behavior of types.getClass.getName
 
-    val Some(foo) = arguments.find(_.name == "foo").headOption
-    foo.typeDigest.typedName shouldBe "scala.Int"
-
-    val Some(bar) = arguments.find(_.name == "bar").headOption
-    bar.typeDigest.typedName shouldBe "java.lang.String"
-
-    val Some(baz) = arguments.find(_.name == "baz").headOption
-    baz.typeDigest.typedName shouldBe "scala.collection.Seq[scala.Long]"
-  }
-
-  behavior of TypeReflector.getClass.getSimpleName
-
-  it can "inspect case class fields through public-methods" in {
-    val digest = TypeReflector.inspect[SampleCaseClass]
+  it can "inspect case class fields" in {
+    val digest = types.sampleCaseClass
 
     val Some(foo) = digest.members.find(_.decodedName == "foo").headOption
     foo.resultType.typedName shouldBe "scala.Int"
@@ -36,14 +20,9 @@ class CaseClassStructureTest extends FlatSpecLike with Matchers {
     val Some(baz) = digest.members.find(_.decodedName == "baz").headOption
     baz.resultType.typedName shouldBe "scala.collection.Seq[scala.Long]"
   }
-}
-
-class ClassStructureTest extends FlatSpecLike with Matchers {
-
-  behavior of TypeReflector.getClass.getSimpleName
 
   it can "inspect class fields" in {
-    val digest = TypeReflector.inspect[SampleClass]
+    val digest = types.sampleClass
 
     val Some(foo) = digest.members.find(_.decodedName == "foo").headOption
     foo.resultType.typedName shouldBe classOf[GenericMixin].getName
@@ -68,20 +47,12 @@ class ClassStructureTest extends FlatSpecLike with Matchers {
     val withParenthesis = digest.members.find(_.decodedName == "withParenthesis")
     withParenthesis shouldBe None
   }
-
 }
 
-case class SampleCaseClass(foo: Int, bar: String, baz: Seq[Long])
+class ClassReflectionTest extends FlatSpecLike with Matchers with ClassCommonTests{
+  override def types = ClassesByReflection
+}
 
-class SampleClass(
-  val foo: GenericMixin,
-  val bar: String,
-  val baz: Seq[Long],
-  privateArg: Int ){
-
-  def hello: String = "world"
-
-  def withParenthesis(): Int = ???
-
-  private def privateValue: Int = ???
+class ClassMacroTest extends FlatSpecLike with Matchers with ClassCommonTests{
+  override def types = ClassesByMacro
 }

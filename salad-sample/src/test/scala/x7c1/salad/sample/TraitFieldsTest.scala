@@ -4,10 +4,12 @@ import org.scalatest.{Matchers, FlatSpecLike}
 
 import x7c1.salad.inspector.FieldSummary
 
-trait CommonTests {
+trait TraitCommonTests {
   this: FlatSpecLike with Matchers =>
 
   def types: SampleTypes
+
+  behavior of types.getClass.getName
 
   it can "inspect package" in {
     val x = types.nestedPackage
@@ -102,10 +104,10 @@ trait CommonTests {
   }
 }
 
-class TypeStructureTest extends FlatSpecLike with Matchers with CommonTests {
+class TraitMacroTest extends FlatSpecLike with Matchers with TraitCommonTests {
   override def types = TypesByMacro
 }
 
-class TypeReflectionTest extends FlatSpecLike with Matchers with CommonTests{
+class TraitReflectionTest extends FlatSpecLike with Matchers with TraitCommonTests{
   override def types = TypesByReflection
 }
