@@ -10,18 +10,32 @@ class TypeDigestTreeFactory[C <: blackbox.Context](
   import context.universe._
 
   def createFrom(target: Type): Tree = {
-    val fields = target.members.view.
-      filter(x => x.isMethod && x.isAbstract).
+
+    val base = target.members.view.
       filter(x => nameFilter(x.owner.fullName)).
-      map(_.asMethod).filter(_.paramLists.isEmpty).
-      map{ method =>
+      filter(_.isMethod)
+
+    def classFields = base.
+      filter(_.isPublic).map(_.asMethod).
+      filter(_.isGetter)
+
+    def traitFields = base.
+      filter(_.isAbstract).map(_.asMethod).
+      filter(_.paramLists.isEmpty)
+
+    val isTrait = {
+      val constructor = target.members.find(_.isConstructor).map(_.asMethod)
+      val arguments = constructor.toSeq.map(_.paramLists.flatten).flatten
+      arguments.isEmpty
+    }
+    val fields = { if(isTrait) traitFields else classFields } map {
+      method =>
         val resultOf = method.typeSignatureIn(_: Type).resultType
         createField(
           decodedName = method.name.decodedName.toString,
           rawTypeLabel = buildRawLabelFrom(resultOf(target.etaExpand)),
           typeTree = createFrom(resultOf(target)))
-      }
-
+    }
     createType(
       packageName = findPackage(target.typeSymbol.owner),
       fullName = target.typeSymbol.fullName,
