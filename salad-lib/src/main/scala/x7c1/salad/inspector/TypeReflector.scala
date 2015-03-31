@@ -4,7 +4,9 @@ import scala.reflect.runtime.universe._
 
 object TypeReflector {
   def inspect[A: WeakTypeTag]: TypeDigest = {
-    val defaultFilter = ! (_: String).startsWith("scala.")
+    val defaultFilter = (x: String) =>
+      !(x startsWith "scala") && !(x startsWith "java")
+
     new TypeReflector(defaultFilter).inspect[A]
   }
 }
