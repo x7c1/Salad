@@ -1,5 +1,6 @@
 package x7c1.salad.inspector.macros
 
+import x7c1.salad.inspector.DefaultRules.notBuiltIn
 import x7c1.salad.inspector.TypeDigest
 
 import scala.language.experimental.macros
@@ -15,7 +16,7 @@ private object TypeExpanderImpl {
 
     val factory = new TypeDigestTreeFactory[c.type](
       context = c,
-      nameFilter = ! (_: String).startsWith("scala.")
+      nameFilter = notBuiltIn
     )
     factory.createFrom(weakTypeOf[A]) : c.Tree
   }
