@@ -1,4 +1,8 @@
-package x7c1.salad.inspector
+package x7c1.salad.inspector.reflect
+
+import x7c1.salad.inspector.DefaultRules.notBuiltIn
+import x7c1.salad.inspector.{MethodArgument, MethodSignature, ObjectOutline}
+
 import scala.reflect.runtime.universe._
 
 class ObjectReflector(nameFilter: String => Boolean){
@@ -35,10 +39,6 @@ class ObjectReflector(nameFilter: String => Boolean){
 
 object ObjectReflector {
   def inspect[A: WeakTypeTag](scrutinee: A): ObjectOutline = {
-    val defaultFilter = (x: String) =>
-      !x.startsWith("scala.") &&
-      !x.startsWith("java.")
-
-    new ObjectReflector(defaultFilter).inspect(scrutinee)
+    new ObjectReflector(notBuiltIn) inspect scrutinee
   }
 }

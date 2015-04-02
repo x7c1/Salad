@@ -1,15 +1,32 @@
-package x7c1.salad.inspector
+package x7c1.salad.inspector.reflect
+
+import x7c1.salad.inspector.{FieldSummary, TypeDigest}
 
 import scala.reflect.runtime.universe._
 
 class TypeDigestFactory(nameFilter: String => Boolean){
 
   def createDigestFrom(target: Type): TypeDigest = {
-    val fields = target.members.view.
+
+    val base = target.members.view.
       filter(x => nameFilter(x.owner.fullName)).
-      filter(x => x.isMethod && x.isAbstract).
-      map(_.asMethod).filter(_.paramLists.isEmpty).
-      map{ method =>
+      filter(_.isMethod)
+
+    def classFields = base.
+      filter(_.isPublic).map(_.asMethod).
+      filter(_.isGetter)
+
+    def traitFields = base.
+      filter(_.isAbstract).map(_.asMethod).
+      filter(_.paramLists.isEmpty)
+
+    val isTrait = {
+      val constructor = target.members.find(_.isConstructor).map(_.asMethod)
+      val arguments = constructor.toSeq.map(_.paramLists.flatten).flatten
+      arguments.isEmpty
+    }
+    val fields = { if(isTrait) traitFields else classFields } map {
+      method =>
         val resultOf = method.typeSignatureIn(_: Type).resultType
         new FieldSummary(
           decodedName = method.name.decodedName.toString,

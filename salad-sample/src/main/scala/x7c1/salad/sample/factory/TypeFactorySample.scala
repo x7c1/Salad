@@ -1,4 +1,4 @@
-package x7c1.salad.sample
+package x7c1.salad.sample.factory
 
 import x7c1.salad.factory.TypeFactory
 

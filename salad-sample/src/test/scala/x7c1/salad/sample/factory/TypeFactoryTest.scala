@@ -1,5 +1,4 @@
-package x7c1.salad.sample
-
+package x7c1.salad.sample.factory
 
 import org.scalatest.{FlatSpecLike, Matchers}
 
