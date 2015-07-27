@@ -137,7 +137,7 @@ def show = define { (id: Int, name: String) =>
 }
 ```
 
-This `show` gives two ways to pass the arguments.
+This `show` has two ways to accept the argument(s).
 
 First, as usually.
 
