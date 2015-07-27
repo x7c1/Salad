@@ -16,10 +16,12 @@ class AgglomeratorTest extends FlatSpecLike with Matchers {
   it should "accept usual arguments" in {
     show(123, "foo") shouldBe "id:123, name:foo"
   }
-
-  case class SampleUser(id: Int, name: String, nick: String)
-
   it should "accept an object whose field has each arguments" in {
+    case class SampleUser(
+      id: Int,
+      name: String,
+      nick: String
+    )
     val user = SampleUser(
       id = 123,
       name = "foo",
