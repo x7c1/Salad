@@ -44,7 +44,7 @@ println(name)
 // Some(scala.Long)
 ```
 
-It also makes so easy to scan fields recursively.
+This `TypeDigest` also makes it so easy to scan fields recursively.
 
 ```scala
 println(dump(digest))
@@ -124,6 +124,37 @@ val x = GenericMixin(
   genericValue2 = "bar"
 )
 x.genericValue1// 777
+```
+
+### Agglomerate function parameters
+
+Implement function with `define` like:
+
+```scala
+import x7c1.salad.parameter.Agglomerator.define
+def show = define { (id: Int, name: String) =>
+  s"id:$id, name:$name"
+}
+```
+
+This `show` gives two ways to pass the arguments.
+
+First, as usually.
+
+```scala
+show(123, "foo")//"id:123, name:foo"
+```
+
+Second is by structural subtyping.
+
+```scala
+case class User(id: Int, name: String, nick: String)
+val user = User(
+  id = 123,
+  name = "foo",
+  nick = "bar"
+)
+show(user)//"id:123, name:foo"
 ```
 
 ## Usage
