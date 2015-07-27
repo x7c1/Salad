@@ -157,6 +157,8 @@ val user = User(
 show(user)//"id:123, name:foo"
 ```
 
+You no longer need to write these methods twice separately.
+
 ## Usage
 
 In your sbt build definition:
