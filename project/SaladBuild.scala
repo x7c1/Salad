@@ -5,7 +5,7 @@ object SaladBuild extends Build {
 
   val saladSettings = Seq(
     organization := "x7c1",
-    scalaVersion := "2.11.2",
+    scalaVersion := "2.11.7",
     scalacOptions ++= Seq(
       "-deprecation",
       "-feature")
