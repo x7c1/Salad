@@ -1,4 +1,4 @@
-#Salad
+#Salad [![Build Status](https://travis-ci.org/x7c1/Salad.svg)](https://travis-ci.org/x7c1/Salad)
 
 Library using Scala macros and reflections.
 
